@@ -8,7 +8,7 @@ class Movie
   def initialize(title:)
     @title = title.squeeze.strip.capitalize
     @genres = []
-    @shows = {}
+    @shows = []
   end
 
   def genres
@@ -20,16 +20,13 @@ class Movie
     @genres << genre
   end
 
-  def add_show(show_timing, rows, cols)
-    show_timing = show_timing.upcase
-    validate_show_timings(show_timing)
-
-    # TODO: create and add a show
-    @shows[show_timing] = Object.new
+  def show_timings
+    @shows.map(&:show_timing)
   end
 
-  def show_timings
-    @shows.keys
+  def add_show(show)
+    validate_show(show)
+    @shows << show
   end
 
   private
@@ -40,13 +37,9 @@ class Movie
     raise ArgumentError, "Invalid genre, please see data/genres.json for a complete list of genres"
   end
 
-  def validate_show_timings(show_timing)
-    begin
-      DateTime.strptime(show_timing, "%I:%M %p")
-    rescue ArgumentError
-      raise ArgumentError, "Invalid show timings #{show_timing}, please use HH:MM AM/PM format"
+  def validate_show(current_show)
+    raise ArgumentError, "A show already exists at #{show_timing} for this movie" if @shows.any? do |show|
+      current_show.show_timing == show.show_timing
     end
-
-    raise ArgumentError, "A show already exists at #{show_timing} for this movie" if @shows.key?(show_timing)
   end
 end
