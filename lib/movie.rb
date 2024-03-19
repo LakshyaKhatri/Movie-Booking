@@ -14,6 +14,7 @@ class Movie
   end
 
   def add_genre(genre)
+    validate_genre(genre)
     @genres << genre
   end
 
@@ -24,5 +25,12 @@ class Movie
 
   def show_timings
     @shows.keys
+  end
+
+  private
+
+  def validate_genre(genre)
+    return if Utils::ALL_GENRES.include?(genre)
+    raise ArgumentError, "Invalid genre, please see data/genres.json for a complete list of genres"
   end
 end
