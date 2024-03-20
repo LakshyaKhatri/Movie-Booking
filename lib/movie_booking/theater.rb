@@ -36,4 +36,12 @@ class Theater
 
     @seat_management.reserved?(row, col)
   end
+
+  def reserve(seat_label)
+    @seat_management.mark_reserved(seat_label)
+  end
+
+  def unreserve(seat_label)
+    @seat_management.mark_unreserved(seat_label)
+  end
 end

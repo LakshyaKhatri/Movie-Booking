@@ -19,4 +19,8 @@ class Booking
   def ticket
     @ticket ||= Ticket.new(self)
   end
+
+  def cancel
+    @show.theater.unreserve(@seat)
+  end
 end
