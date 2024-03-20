@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+
 # NOTE: Theaters are local to a Show
 class Theater
   def initialize(num_rows, num_cols)
