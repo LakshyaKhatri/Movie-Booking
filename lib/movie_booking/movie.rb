@@ -1,4 +1,5 @@
 require_relative 'utils'
+require 'titleize'
 
 class Movie
   attr_reader :title
@@ -6,7 +7,7 @@ class Movie
   # Skipping the following tasks to prevent scope creep:
   # - multiple shows on same timestamp
   def initialize(title:)
-    @title = title.squeeze.strip.capitalize
+    @title = title.squeeze.strip.titleize
     @genres = []
     @shows = []
   end
