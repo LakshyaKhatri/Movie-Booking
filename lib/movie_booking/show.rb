@@ -15,6 +15,18 @@ class Show
     @theater = Theater.new(num_rows, num_cols)
   end
 
+  def reserve_seat(seat_label)
+    @theater.mark_reserved(seat_label)
+  end
+
+  def cancel_seat(seat_label)
+    @theater.mark_unreserved(seat_label)
+  end
+
+  def seats
+    @theater.seats
+  end
+
   private
 
   def vaildate_movie(movie)
@@ -27,24 +39,5 @@ class Show
     rescue ArgumentError
       raise ArgumentError, "Invalid show timings #{show_timing}, please use HH:MM AM/PM format"
     end
-  end
-
-  def reserve_seat(seat_label)
-    @theater.mark_reserved(seat_label)
-  end
-
-  def cancel_seat(seat_label)
-    @theater.mark_unreserved(seat_label)
-  end
-
-  def display_seat_status
-    status = "Show Timing: #{@show_timing}\n"
-    @seat_grid.each do |row|
-      row.each do |seat|
-        status += seat ? "O " : "X "  # O represents available seat, X represents booked seat
-      end
-      status += "\n"
-    end
-    return status
   end
 end
