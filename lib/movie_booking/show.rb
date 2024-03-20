@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'theater'
+require 'date'
 
 class Show
   attr_reader :movie, :show_timing
 
-  def initialize(movie, show_timing, num_rows, num_cols)
+  def initialize(movie:, show_timing:, num_rows:, num_cols:)
     vaildate_movie(movie)
     @movie = movie
 
