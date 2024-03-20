@@ -65,8 +65,6 @@ class SeatManagement
     [row, col]
   end
 
-  private
-
   def valid_seat_position?(row, col)
     @seats.key?(row) && col >= 0 && col < @num_cols
   end

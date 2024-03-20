@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'seat_management'
-require_relative 'utils'
 
 # NOTE: Theater is local to a Show
 class Theater
@@ -12,5 +11,23 @@ class Theater
   # delegated methods
   def seats
     @seat_management.seats
+  end
+
+  def available_seat_count
+    @seat_management.available_seat_count
+  end
+
+  def booked_seat_count
+    @seat_management.booked_seat_count
+  end
+
+  def total_seat_count
+    @seat_management.total_seat_count
+  end
+
+  def valid_seat_position?(seat_label)
+    row, col = @seat_management.extract_seat_position(seat_label)
+
+    @seat_management.valid_seat_position?(row, col)
   end
 end
