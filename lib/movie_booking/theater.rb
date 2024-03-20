@@ -30,4 +30,10 @@ class Theater
 
     @seat_management.valid_seat_position?(row, col)
   end
+
+  def seat_reserved?(seat_label)
+    row, col = @seat_management.extract_seat_position(seat_label)
+
+    @seat_management.reserved?(row, col)
+  end
 end

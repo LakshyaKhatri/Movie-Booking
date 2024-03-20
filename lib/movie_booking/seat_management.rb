@@ -68,4 +68,8 @@ class SeatManagement
   def valid_seat_position?(row, col)
     @seats.key?(row) && col >= 0 && col < @num_cols
   end
+
+  def reserved?(row, col)
+    @seats[row][col]
+  end
 end
