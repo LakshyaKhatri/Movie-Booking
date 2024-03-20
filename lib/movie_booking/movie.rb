@@ -28,13 +28,13 @@ class Movie
     @genres << genre
   end
 
-  def show_timings
+  def show_times
     @shows.keys
   end
 
   def add_show(show)
     validate_show(show)
-    @shows[show.show_timing] = show
+    @shows[show.time] = show
   end
 
   private
@@ -47,8 +47,8 @@ class Movie
 
   def validate_show(show)
     raise ArgumentError, 'Invalid Show instance' unless show.is_a? Show
-    return unless @shows.key? show.show_timing
+    return unless @shows.key? show.time
 
-    raise ArgumentError, "A show already exists at #{show.show_timing} for this movie"
+    raise ArgumentError, "A show already exists at #{show.time} for this movie"
   end
 end

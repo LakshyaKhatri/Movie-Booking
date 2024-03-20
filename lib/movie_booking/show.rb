@@ -4,15 +4,15 @@ require_relative 'theater'
 require 'date'
 
 class Show
-  attr_reader :movie, :show_timing
+  attr_reader :movie, :time
 
-  def initialize(movie:, show_timing:, num_rows:, num_cols:)
+  def initialize(movie:, time:, num_rows:, num_cols:)
     vaildate_movie(movie)
     @movie = movie
 
-    show_timing.upcase!
-    validate_show_timing(show_timing)
-    @show_timing = show_timing
+    time.upcase!
+    validate_time(time)
+    @time = time
 
     # Future Iteration: allow API user's to assign shows to Theater of their choice
     @theater = Theater.new(num_rows, num_cols)
@@ -30,17 +30,25 @@ class Show
     @theater.seats
   end
 
+  def seat_status
+    {
+      reserved: @theater.reserved_seat_count,
+      available: @theater.available_seat_count,
+      total: @theater.total_seat_count
+    }
+  end
+
   private
 
   def vaildate_movie(movie)
     raise ArgumentError, 'Invalid Movie Instance' unless movie.is_a? Movie
   end
 
-  def validate_show_timing(show_timing)
+  def validate_time(time)
     begin
-      DateTime.strptime(show_timing, '%I:%M %p')
+      DateTime.strptime(time, '%I:%M %p')
     rescue ArgumentError
-      raise ArgumentError, "Invalid show timings #{show_timing}, please use HH:MM AM/PM format"
+      raise ArgumentError, "Invalid show time #{time}, please use HH:MM AM/PM format"
     end
   end
 end
