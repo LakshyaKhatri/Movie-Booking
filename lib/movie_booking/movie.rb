@@ -1,5 +1,6 @@
-require_relative 'utils'
 require 'titleize'
+require_relative 'utils'
+require_relative 'show'
 
 class Movie
   attr_reader :title
@@ -39,6 +40,7 @@ class Movie
   end
 
   def validate_show(current_show)
+    raise ArgumentError, "Invalid Show instance" unless current_show.is_a? Show
     raise ArgumentError, "A show already exists at #{show_timing} for this movie" if @shows.any? do |show|
       current_show.show_timing == show.show_timing
     end
