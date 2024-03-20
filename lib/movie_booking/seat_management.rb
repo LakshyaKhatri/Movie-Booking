@@ -13,6 +13,10 @@ class SeatManagement
     @seats = generate_seat_grid(@num_rows, @num_cols)
   end
 
+  def seats
+    @seats.dup
+  end
+
   def generate_seat_grid(num_rows, num_cols)
     seats = {}
     end_label = generate_row_label(num_rows)
