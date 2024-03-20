@@ -40,6 +40,7 @@ class SeatManagement
     raise ReservationError, "Seat #{seat_label} is already booked." if @seats[row][col]
 
     @seats[row][col] = true
+    @available_seat_count -= 1
   end
 
   def mark_unreserved(seat_label)
@@ -48,6 +49,7 @@ class SeatManagement
     raise ReservationError, "Seat #{seat_label} is already unreserved." unless @seats[row][col]
 
     @seats[row][col] = false
+    @available_seat_count += 1
   end
 
   def extract_seat_position(seat_label)
