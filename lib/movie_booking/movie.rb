@@ -12,7 +12,7 @@ class Movie
   def initialize(title:)
     @title = title.squeeze.strip.titleize
     @genres = []
-    @shows = []
+    @shows = {}
   end
 
   def genres
@@ -25,12 +25,12 @@ class Movie
   end
 
   def show_timings
-    @shows.map(&:show_timing)
+    @shows.keys
   end
 
   def add_show(show)
     validate_show(show)
-    @shows << show
+    @shows[show.show_timing] = show
   end
 
   private
@@ -41,10 +41,10 @@ class Movie
     raise ArgumentError, 'Invalid genre, please see data/genres.json for a complete list of genres'
   end
 
-  def validate_show(current_show)
-    raise ArgumentError, 'Invalid Show instance' unless current_show.is_a? Show
-    raise ArgumentError, "A show already exists at #{show_timing} for this movie" if @shows.any? do |show|
-      current_show.show_timing == show.show_timing
-    end
+  def validate_show(show)
+    raise ArgumentError, 'Invalid Show instance' unless show.is_a? Show
+    return unless @shows.key? show.show_timing
+
+    raise ArgumentError, "A show already exists at #{show.show_timing} for this movie"
   end
 end
