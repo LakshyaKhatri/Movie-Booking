@@ -4,7 +4,7 @@ require_relative 'theater'
 require 'date'
 
 class Show
-  attr_reader :movie, :time
+  attr_reader :movie, :time, :theater
 
   def initialize(movie:, time:, num_rows:, num_cols:)
     vaildate_movie(movie)
@@ -24,10 +24,6 @@ class Show
 
   def cancel_seat(seat_label)
     @theater.mark_unreserved(seat_label)
-  end
-
-  def seats
-    @theater.seats
   end
 
   def seat_status
