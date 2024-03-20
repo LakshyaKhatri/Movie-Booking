@@ -38,11 +38,11 @@ class Movie
   def validate_genre(genre)
     return if Utils::ALL_GENRES.include?(genre)
 
-    raise ArgumentError, "Invalid genre, please see data/genres.json for a complete list of genres"
+    raise ArgumentError, 'Invalid genre, please see data/genres.json for a complete list of genres'
   end
 
   def validate_show(current_show)
-    raise ArgumentError, "Invalid Show instance" unless current_show.is_a? Show
+    raise ArgumentError, 'Invalid Show instance' unless current_show.is_a? Show
     raise ArgumentError, "A show already exists at #{show_timing} for this movie" if @shows.any? do |show|
       current_show.show_timing == show.show_timing
     end

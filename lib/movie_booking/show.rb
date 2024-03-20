@@ -32,12 +32,12 @@ class Show
   private
 
   def vaildate_movie(movie)
-    raise ArgumentError, "Invalid Movie Instance" unless movie.is_a? Movie
+    raise ArgumentError, 'Invalid Movie Instance' unless movie.is_a? Movie
   end
 
   def validate_show_timing(show_timing)
     begin
-      DateTime.strptime(show_timing, "%I:%M %p")
+      DateTime.strptime(show_timing, '%I:%M %p')
     rescue ArgumentError
       raise ArgumentError, "Invalid show timings #{show_timing}, please use HH:MM AM/PM format"
     end
