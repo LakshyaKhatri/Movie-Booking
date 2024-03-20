@@ -1,13 +1,22 @@
 # frozen_string_literal: true
 
+# Not implementing following features to prevent scope creep:
+# - reserving multiple seats in single booking
 class Booking
-  attr_reader :show, :seat, :user_full_name
+  attr_reader :show, :seat
 
-  def initialize(show:, seat:, user_full_name:)
+  def initialize(show:, seat:)
     @show = show
     @seat = seat
-    @user_full_name = user_full_name
 
-    reserve_seats
+    reserve_seat
+  end
+
+  def reserve_seat
+    @show.theater.reserve(@seat)
+  end
+
+  def ticket
+    @ticket ||= Ticket.new(self)
   end
 end
