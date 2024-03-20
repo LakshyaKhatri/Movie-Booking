@@ -3,13 +3,14 @@
 class ReservationError < StandardError; end
 
 class SeatManagement
-  attr_reader :total_seat_count, :available_seat_count
+  attr_reader :total_seat_count, :available_seat_count, :booked_seat_count
 
   def initialize(num_rows, num_cols)
     @num_rows = num_rows
     @num_cols = num_cols
     @total_seat_count = num_cols * num_rows
     @available_seat_count = @total_seat_count
+    @booked_seat_count = 0
     @seats = generate_seat_grid(@num_rows, @num_cols)
   end
 
@@ -45,6 +46,7 @@ class SeatManagement
 
     @seats[row][col] = true
     @available_seat_count -= 1
+    @booked_seat_count += 1
   end
 
   def mark_unreserved(seat_label)
@@ -54,6 +56,7 @@ class SeatManagement
 
     @seats[row][col] = false
     @available_seat_count += 1
+    @booked_seat_count -= 1
   end
 
   def extract_seat_position(seat_label)
