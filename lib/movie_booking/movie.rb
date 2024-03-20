@@ -19,6 +19,10 @@ class Movie
     @genres.dup
   end
 
+  def shows
+    @shows.dup
+  end
+
   def add_genre(genre)
     validate_genre(genre)
     @genres << genre
