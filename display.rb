@@ -31,49 +31,61 @@ class Display
   def print_seat_status(theater)
     puts 'Booking Status:'
 
-    table_rows = []
-    table_rows << ['Available Seats'.cyan, theater.available_seat_count.to_s.green]
-    table_rows << :separator
-    table_rows << ['Booked Seats'.cyan, theater.booked_seat_count.to_s.red]
-    table_rows << :separator
-    table_rows << ['Total Seats'.cyan, theater.total_seat_count.to_s.yellow]
+    table_rows = [
+      ['Available Seats'.cyan, theater.available_seat_count.to_s.green],
+      :separator,
+      ['Booked Seats'.cyan, theater.booked_seat_count.to_s.red],
+      :separator,
+      ['Total Seats'.cyan, theater.total_seat_count.to_s.yellow]
+    ]
 
     table = TTY::Table.new(table_rows)
     puts table.render(:unicode)
   end
 
   def print_seating(seats)
-    num_cols = seats['A'].to_a.length
-
-    table_rows = []
-    table_rows << ([''] + (1..num_cols).to_a)
-    table_rows << :separator
-    seats.each do |row_label, row_seats|
-      row = [row_label]
-      row.concat(row_seats.map { |is_seat_reserved| is_seat_reserved ? '✗'.red : '-' })
-      table_rows << row
-      table_rows << :separator
-    end
+    table_rows = create_seating_table_rows(seats)
 
     table = TTY::Table.new(table_rows)
     puts "Seats marked with '#{'✗'.red}' are already booked."
     puts table.render(:unicode, alignment: [:center], resize: true)
 
-    screen_table = TTY::Table.new([['───────────────SCREEN THIS SIDE───────────────']])
-    puts screen_table.render(:unicode, alignment: [:center], resize: true)
-    puts
+    print_screen_boundary
   end
 
   def print_ticket(ticket)
-    table_rows = []
-    table_rows << ['Movie:'.cyan, ticket.movie_title.magenta]
-    table_rows << :separator
-    table_rows << ['Show Time:'.cyan, ticket.show_time.magenta]
-    table_rows << :separator
-    table_rows << ['Seat Number:'.cyan, ticket.seat.magenta]
+    table_rows = [
+      ['Movie:'.cyan, ticket.movie_title.magenta],
+      :separator,
+      ['Show Time:'.cyan, ticket.show_time.magenta],
+      :separator,
+      ['Seat Number:'.cyan, ticket.seat.magenta]
+    ]
 
     table = TTY::Table.new(table_rows)
     puts "Here's your ticket:"
     puts table.render(:unicode)
+  end
+
+  private
+
+  def create_seating_table_rows(seats)
+    num_cols = seats['A'].to_a.length
+    table_rows = []
+
+    table_rows << ['', *(1..num_cols)]
+    table_rows << :separator
+    seats.each do |row_label, row_seats|
+      table_rows << [row_label, *row_seats.map { |is_seat_reserved| is_seat_reserved ? '✗'.red : '-' }]
+      table_rows << :separator
+    end
+
+    table_rows
+  end
+
+  def print_screen_boundary
+    screen_table = TTY::Table.new([['───────────────SCREEN THIS SIDE───────────────']])
+    puts screen_table.render(:unicode, alignment: [:center], resize: true)
+    puts
   end
 end
