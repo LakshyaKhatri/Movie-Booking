@@ -39,7 +39,7 @@ class MovieBookingApp
   private
 
   def load_movies
-    @load_movies ||= load_movies_json_data.each_with_object({}) do |movie_json, movies|
+    load_movies_json_data.each_with_object({}) do |movie_json, movies|
       movie = create_movie(movie_json)
 
       movies[movie.title] = movie
@@ -89,9 +89,10 @@ class MovieBookingApp
   end
 
   def load_movies_json_data
-    movie_file = File.join(File.dirname(__FILE__), 'data/movies.json')
+    return @movies_json_data if @movies_json_data
 
-    JSON.load_file(movie_file, symbolize_names: true)
+    movie_file = File.join(File.dirname(__FILE__), 'data/movies.json')
+    @movies_json_data = JSON.load_file(movie_file, symbolize_names: true)
   end
 
   def create_movie(movie_json)
