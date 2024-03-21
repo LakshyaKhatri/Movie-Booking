@@ -41,10 +41,8 @@ class Show
   end
 
   def validate_time(time)
-    begin
-      DateTime.strptime(time, '%I:%M %p')
-    rescue ArgumentError
-      raise ArgumentError, "Invalid show time #{time}, please use HH:MM AM/PM format"
-    end
+    DateTime.strptime(time, '%I:%M %p')
+  rescue ArgumentError
+    raise ArgumentError, "Invalid show time #{time}, please use HH:MM AM/PM format"
   end
 end

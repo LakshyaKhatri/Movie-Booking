@@ -9,11 +9,11 @@ require_relative 'booking_manager'
 
 SHOW_TIMINGS = ['8:30 AM', '10:00 AM', '11:30 AM', '12:50 PM', '2:00 PM', '3:45 PM'].freeze
 OPERATIONS = {
-  "Book A Ticket": :book_ticket,
-  "Cancel A Ticket": :cancel_ticket,
-  "My Bookings": :list_bookings,
-  "Movie Show Status": :movie_show_status,
-  "Quit": :quit
+  'Book A Ticket': :book_ticket,
+  'Cancel A Ticket': :cancel_ticket,
+  'My Bookings': :list_bookings,
+  'Movie Show Status': :movie_show_status,
+  Quit: :quit
 }.freeze
 
 class MovieBookingApp
@@ -65,18 +65,20 @@ class MovieBookingApp
     @display.print_seat_status(theater)
     @display.print_seating(theater.seats)
     seat_label = @prompt.ask('Please enter the label for the seat you want to book:', required: true) do |q|
-      q.validate ->(seat_label) { theater.valid_seat_position?(seat_label) && !theater.seat_reserved?(seat_label) }
-      q.messages[:valid?] = "Invalid seat label %{value}. Please choose an available seat label from the seats displayed."
+      q.validate ->(value) { theater.valid_seat_position?(value) && !theater.seat_reserved?(value) }
+      q.messages[:valid?] =
+        'Invalid seat label %<value>s. Please choose an available seat label from the seats displayed.'
     end
 
-    booking = Booking.new(show: show, seat: seat_label)
+    booking = Booking.new(show:, seat: seat_label)
     @booking_manager.add_booking(booking)
     @display.print_booking_success
     @display.print_ticket(booking.ticket)
   end
 
   def cancel_ticket
-    booking_index = @prompt.select('Which ticket do you want to cancel?', @booking_manager.booking_indices, filter: true)
+    booking_index = @prompt.select('Which ticket do you want to cancel?', @booking_manager.booking_indices,
+                                   filter: true)
     return if @prompt.no?('Are you sure you want to cancel this ticket?')
 
     @booking_manager.delete_booking(booking_index)
@@ -84,7 +86,8 @@ class MovieBookingApp
   end
 
   def list_bookings
-    booking_index = @prompt.select('Select a ticket to see more details?', @booking_manager.booking_indices, filter: true)
+    booking_index = @prompt.select('Select a ticket to see more details?', @booking_manager.booking_indices,
+                                   filter: true)
     booking = @booking_manager.get_booking(booking_index)
     @display.print_ticket(booking.ticket)
   end
@@ -99,11 +102,9 @@ class MovieBookingApp
   end
 
   def quit
-
     exit(0)
   end
 end
-
 
 app = MovieBookingApp.new
 app.run

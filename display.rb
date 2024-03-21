@@ -3,15 +3,15 @@
 require 'tty-table'
 
 class String
-  def black;          "\033[30m#{self}\033[0m" end
-  def red;            "\033[31m#{self}\033[0m" end
-  def green;          "\033[32m#{self}\033[0m" end
-  def yellow;         "\033[33m#{self}\033[0m" end
-  def blue;           "\033[34m#{self}\033[0m" end
-  def magenta;        "\033[35m#{self}\033[0m" end
-  def cyan;           "\033[36m#{self}\033[0m" end
-  def gray;           "\033[37m#{self}\033[0m" end
-  def underline;         "\033[3;4m#{self}\033[0m" end
+  def black = "\033[30m#{self}\033[0m"
+  def red = "\033[31m#{self}\033[0m"
+  def green = "\033[32m#{self}\033[0m"
+  def yellow = "\033[33m#{self}\033[0m"
+  def blue = "\033[34m#{self}\033[0m"
+  def magenta = "\033[35m#{self}\033[0m"
+  def cyan = "\033[36m#{self}\033[0m"
+  def gray = "\033[37m#{self}\033[0m"
+  def underline = "\033[3;4m#{self}\033[0m"
 end
 
 class Display
@@ -21,15 +21,15 @@ class Display
   end
 
   def print_booking_success
-    puts "Thanks for booking with us!"
+    puts 'Thanks for booking with us!'
   end
 
   def print_cancel_booking_success
-    puts "Ticket Cancelled."
+    puts 'Ticket Cancelled.'
   end
 
   def print_seat_status(theater)
-    puts "Booking Status:"
+    puts 'Booking Status:'
 
     table_rows = []
     table_rows << ['Available Seats'.cyan, theater.available_seat_count.to_s.green]
@@ -43,10 +43,10 @@ class Display
   end
 
   def print_seating(seats)
-    num_cols = seats.dig('A').to_a.length
+    num_cols = seats['A'].to_a.length
 
     table_rows = []
-    table_rows << [''] + (1..num_cols).to_a
+    table_rows << ([''] + (1..num_cols).to_a)
     table_rows << :separator
     seats.each do |row_label, row_seats|
       row = [row_label]
@@ -66,11 +66,11 @@ class Display
 
   def print_ticket(ticket)
     table_rows = []
-    table_rows << ["Movie:".cyan, ticket.movie_title.magenta]
+    table_rows << ['Movie:'.cyan, ticket.movie_title.magenta]
     table_rows << :separator
-    table_rows << ["Show Time:".cyan, ticket.show_time.magenta]
+    table_rows << ['Show Time:'.cyan, ticket.show_time.magenta]
     table_rows << :separator
-    table_rows << ["Seat Number:".cyan, ticket.seat.magenta]
+    table_rows << ['Seat Number:'.cyan, ticket.seat.magenta]
 
     table = TTY::Table.new(table_rows)
     puts "Here's your ticket:"
