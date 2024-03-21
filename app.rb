@@ -39,36 +39,20 @@ class MovieBookingApp
   private
 
   def load_movies
-    movie_file = File.join(File.dirname(__FILE__), 'data/movies.json')
-    movies_json_array = JSON.load_file(movie_file, symbolize_names: true)
-
-    movies_json_array.each_with_object({}) do |movie_json, movies|
-      movie = Movie.new(title: movie_json[:title])
-      movie_json[:genres].each do |genre|
-        movie.add_genre(genre)
-      end
-
-      SHOW_TIMINGS.each do |time|
-        show = Show.new(movie:, time:, num_rows: rand(5..8), num_cols: rand(5..8))
-        movie.add_show(show)
-      end
+    load_movies_json_data.each_with_object({}) do |movie_json, movies|
+      movie = create_movie(movie_json)
 
       movies[movie.title] = movie
     end.freeze
   end
 
   def book_ticket
-    movie = @prompt.select('Which movie you want to see?', @movies, filter: true)
-    show = @prompt.select('Which show you want a ticket for?', movie.shows, filter: true)
+    movie = select_movie('Which movie you want to see?')
+    show = select_show(movie, 'Which show you want a ticket for?')
     theater = show.theater
 
-    @display.print_seat_status(theater)
-    @display.print_seating(theater.seats)
-    seat_label = @prompt.ask('Please enter the label for the seat you want to book:', required: true) do |q|
-      q.validate ->(value) { theater.valid_seat_position?(value) && !theater.seat_reserved?(value) }
-      q.messages[:valid?] =
-        'Invalid seat label %<value>s. Please choose an available seat label from the seats displayed.'
-    end
+    display_theater_status(theater)
+    seat_label = select_seat(theater)
 
     booking = Booking.new(show:, seat: seat_label)
     @booking_manager.add_booking(booking)
@@ -93,16 +77,56 @@ class MovieBookingApp
   end
 
   def movie_show_status
-    movie = @prompt.select('Select a movie first', @movies, filter: true)
-    show = @prompt.select('Which show you want to check?', movie.shows, filter: true)
+    movie = select_movie('Select a movie first')
+    show = select_show(movie, 'Which show you want to check?')
     theater = show.theater
 
-    @display.print_seat_status(theater)
-    @display.print_seating(theater.seats)
+    display_theater_status(theater)
   end
 
   def quit
     exit(0)
+  end
+
+  def load_movies_json_data
+    movie_file = File.join(File.dirname(__FILE__), 'data/movies.json')
+
+    JSON.load_file(movie_file, symbolize_names: true)
+  end
+
+  def create_movie(movie_json)
+    movie = Movie.new(title: movie_json[:title])
+    movie_json[:genres].each do |genre|
+      movie.add_genre(genre)
+    end
+
+    SHOW_TIMINGS.each do |time|
+      show = Show.new(movie:, time:, num_rows: rand(5..8), num_cols: rand(5..8))
+      movie.add_show(show)
+    end
+
+    movie
+  end
+
+  def select_movie(prompt_message)
+    @prompt.select(prompt_message, @movies, filter: true)
+  end
+
+  def select_show(movie, prompt_message)
+    @prompt.select(prompt_message, movie.shows, filter: true)
+  end
+
+  def select_seat(theater)
+    @prompt.ask('Please enter the label for the seat you want to book:', required: true) do |q|
+      q.validate ->(value) { theater.valid_seat_position?(value) && !theater.seat_reserved?(value) }
+      q.messages[:valid?] =
+        'Invalid seat label %{value}. Please choose an available seat label from the seats displayed.' # rubocop:disable Style/FormatStringToken
+    end
+  end
+
+  def display_theater_status(theater)
+    @display.print_seat_status(theater)
+    @display.print_seating(theater.seats)
   end
 end
 
