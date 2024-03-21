@@ -39,7 +39,7 @@ class MovieBookingApp
   private
 
   def load_movies
-    load_movies_json_data.each_with_object({}) do |movie_json, movies|
+    @load_movies ||= load_movies_json_data.each_with_object({}) do |movie_json, movies|
       movie = create_movie(movie_json)
 
       movies[movie.title] = movie
