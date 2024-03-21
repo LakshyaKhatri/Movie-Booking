@@ -10,7 +10,7 @@ class Show
     vaildate_movie(movie)
     @movie = movie
 
-    time.upcase!
+    time = time.upcase
     validate_time(time)
     @time = time
 
