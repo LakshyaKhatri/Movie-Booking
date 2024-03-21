@@ -1,4 +1,26 @@
-# Problem Statement
+# Movie Booking
+
+A terminal based movie booking library
+
+## Installation
+
+```sh
+git clone https://github.com/LakshyaKhatri/Movie-Booking.git && cd Movie-Booking
+gem build movie_booking
+gem install --local movie_booking-0.0.1.gem
+```
+
+## Usage
+
+**App Runner:** If you just want to use the movie booking system you can use the runner file:
+
+```sh
+ruby app.rb # make sure you have ruby >= 3.0.0
+```
+
+**Gem Library:** If you want to integrate it with your custom use case, you can check the file inside `lib/` and use the classes as per your need.
+
+## Problem Statement
 
 ### Movie Initialization
 
