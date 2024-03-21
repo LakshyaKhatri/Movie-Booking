@@ -26,14 +26,6 @@ class Show
     @theater.mark_unreserved(seat_label)
   end
 
-  def seat_status
-    {
-      reserved: @theater.reserved_seat_count,
-      available: @theater.available_seat_count,
-      total: @theater.total_seat_count
-    }
-  end
-
   private
 
   def vaildate_movie(movie)
