@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-prompt", "~> 0.23.1"
   spec.add_dependency "tty-table", "~> 0.12.0"
   spec.add_dependency "titleize", "~> 1.4.1"
+  spec.add_dependency "json", "~> 2.7.1"
 
   spec.add_development_dependency "rubocop", "~> 1.62.1"
 end
