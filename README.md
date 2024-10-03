@@ -2,6 +2,12 @@
 
 A terminal based movie booking library
 
+
+## Screnshots
+<img width="1121" alt="image" src="https://github.com/user-attachments/assets/b123ea7e-0a3a-4652-a827-33bf93d35fab">
+
+
+
 ## Installation
 
 ```sh
@@ -48,3 +54,4 @@ ruby app.rb # make sure you have ruby >= 3.0.0
 ### Multiple Movies and Shows:
 
 - Extend the system to support multiple movies with different show timings.
+
